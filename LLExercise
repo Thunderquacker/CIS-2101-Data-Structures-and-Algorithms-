@@ -1,0 +1,143 @@
+#include <stdio.h>
+
+struct{
+    int month;
+    int day;
+    int year;
+}BIRTHDATE;
+
+struct{
+    int id;
+    char name[300];
+    BIRTHDATE bday;
+    int yrlvl;
+}STUDENT;
+
+typedef struct node{
+    STUDENT data;
+    struct node *link;
+}*LIST;
+
+
+int main(){
+    
+    
+    
+    return 0;
+}
+
+void sortByAge(LIST head){
+    int swapped;
+    struct node *ptr1;
+    struct node *lptr = NULL;
+    
+    if(head == NULL) return;
+    
+    do{
+        swapped = 0;
+        ptr1 = head;
+        
+        while(ptr1->link != lptr){
+            if(ptr1->data.bday.year > ptr1->link->data.bday.year || (ptr1->data.bday.year == ptr1->link->data.bday.year && ptr1->data.bday.month > ptr1->link->data.bday.month) || (ptr1->data.bday.year == ptr1->link->data->year && ptr1->data.bday.month == ptr1->link->data.bday.month && ptr1->data.bday.day > ptr1->link->data.bday.day)){
+                STUENT temp = ptr1->data;
+                ptr1->data = ptr1->link->data;
+                ptr1->link->data = temp;
+                swapped = 1;
+            }
+            ptr1 = ptr1->link;
+        }
+        lptr = ptr1;
+    } while (swapped);
+}
+
+LIST extractYearLevel3(LIST *origin){
+    LIST newList = NULL;
+    LIST *lastPtr = &newList;
+    LIST *curr = origin;
+    
+    while(*curr != NULL){
+        if((*curr)->data.yrLvl == 3){
+            
+            struct node *temp = *curr;
+            *curr = (*curr)->link;
+            
+            temp->link = NULL;
+            *lastPtr = temp;
+            lastPtr = &(temp->link);
+        } else {
+            curr = &((*curr)->link);
+        }
+    }
+    return newList;
+}
+
+void removeFirstAndLast(LIST *head){
+    if(*head == NULL) return;
+    
+    struct node *toDeleteFirst = *head;
+    
+    if((*head)->link == NULL){
+        free(toDeleteFirst);
+        *head = NULL;
+        return;
+    }
+    
+    *head = (*head)->link;
+    free(toDeleteFirst);
+    
+    struct node *curr = *head;
+    struct node *prev = NULL;
+    
+    while(curr->link != NULL){
+        prev = curr;
+        prev = curr->link;
+    }
+    
+    if(prev != NULL){
+        prev->link = NULL;
+        free(curr);
+    }
+}
+
+void addStudent(LIST *head, STUDENT newStudent){
+    
+    struct node *newNode = (struct node*)malloc(sizeof(struct node));
+    newNode->data = newStudent;
+    newNode->link = NULL;
+    
+    if(*head == NULL){
+        *head = newNode;
+         return;
+    }
+    
+    struct node *temp = *head;
+    while(temp->link != NULL){
+        temp = temp->link;
+    }
+    
+    temp->link = newNode;
+}
+
+void displayStudent(LIST head){
+    if(head == NULL){
+        printf("List is empty.");
+        return;
+    }
+    
+    printf("");
+    for(struct node *curr = head; curr != NULL; curr = curr->link){
+        printf("\n%-5d %-20s %02d/%02d/%-6d %-5d", curr->data.id, curr->data.name, curr->data.bday.month, curr->data.bday.day, curr->data.bday.year, curr->data.yrlvl);
+    }
+    printf("\n");
+}
+
+STUDENT inputStudentDetails(){
+    STUDENT s;
+    
+    printf("ID: ");
+    scanf("%d", s.id);
+    getchar();
+    fgets(s.name, 300, stdin);
+    s.name[strcspn(s.name, "\n")] = 0;
+    printf("Birth Month: ")
+}
