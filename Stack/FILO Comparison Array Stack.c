@@ -13,7 +13,7 @@ void init(SA *s);
 bool isFull(SA s);
 bool isEmpty(SA s);
 void read(SA s);
-void push(SA *s, int data);
+void push(SA *s, char data);
 char pop(SA *s);
 int top(SA s);
 int equal(SA s1, SA s2);
@@ -50,7 +50,7 @@ bool isFull(SA s){
     return (s.top == 0) ? true : false;
 }
 
-void push(SA *s, int data){
+void push(SA *s, char data){
     if(!isFull(*s)){
         s->elem[--(s->top)] = data;
     }
