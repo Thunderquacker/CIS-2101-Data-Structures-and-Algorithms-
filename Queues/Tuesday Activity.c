@@ -14,7 +14,7 @@ CA* createQueue();
 void enqueue(CA* q, char data);
 char dequeue(CA* q);
 void display(CA* q);
-void reverse(CA* q);
+void reverseElements(CA* q, int k);
 
 
 CA* createQueue(){
@@ -46,11 +46,34 @@ void display(CA* q){
     
     for(int i = 0; i < q->count; i++){
         printf("%c ", q->array[current]);
-        current = (current + 1) % q->count;
+        current = (current + 1) % MAX;
     }
 }
 
-
+void reverseElements(CA *q, int k){
+    if(k > q->count || k <= 0) {
+        printf("Cant print");
+        return;
+    }
+    CA* temp = createQueue();
+    
+   char stack[MAX];
+   int top = -1;
+   
+   for(int i = 0; i < k; i++){
+       stack[++top] = dequeue(q);
+   }
+   
+   while(top >= 0){
+       enqueue(q, stack[top--]);
+   }
+   
+   int remaining = q->count - k;
+   
+   for(int i = 0; i < remaining; i++){
+       enqueue(q, dequeue(q));
+   }
+}
 int main(){
     
     
@@ -62,12 +85,10 @@ int main(){
     enqueue(q, 'C');
     enqueue(q, 'D');
     enqueue(q, 'E');
+    enqueue(q, 'F');
     display(q);
-    if (!reverseK(q, 3)) {
-        printf("Cant print shit");
-    } else {
-        display(q);
-    }
+    reverseElements(q, 3);
+    display(q);
     
     
     
