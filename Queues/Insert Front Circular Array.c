@@ -50,7 +50,7 @@ void enqueue(CA* q, int data){
         return;
     }
     
-    q->rear = (q->rear + 1) % q->size;
+    q->rear = (q->rear - 1 + MAX) % MAX;
     q->array[q->rear] = data;
     q->count++;
 }
