@@ -1,4 +1,3 @@
-// Online C compiler to run C program online
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -26,8 +25,11 @@ int main(){
     printSet(B);
     
     set *u = set_union(A, B);
-    printf("\n Union: ");
+    printf("Union: ");
     printSet(*u);
+    set *i = intersec(A, B);
+    printf("Intersection: ");
+    printSet(*i);
 
     return 0;
 }
@@ -64,8 +66,8 @@ set *intersec(set a, set b){
 
 void populate(set s){
     
-    for(int i = 0; i < MAX; i++){
-        printf("Insert an element (1 or 0): ");
+    for(int i = MAX; i > 0; i++){
+        printf("Insert element %d (1 or 0): ", i);
         scanf("%d", &s[i]);
     }
 }
