@@ -5,7 +5,7 @@
 
 
 typedef struct{
-    unsigned char field;
+    unsigned int field;
 } Set;
 
 void init(Set *s);
