@@ -1,153 +1,145 @@
+// Online C compiler to run C program online
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#define MAX 10
 
 typedef struct node{
     int data;
     struct node *next;
-}LIST, *ctrlink;
+}*List;
 
-ctrlink createNode(int value);
-void insertFront(ctrlink *head, int value);
-void insertRear(ctrlink *head, int value);
-void deleteFront(ctrlink *head);
-void deleteRear(ctrlink *head);
-void deleteAt(ctrlink *head, int pos);
-void insertAt(ctrlink *head, int pos, int value);
-void display(ctrlink head);
+List createNode(int data);
+void insertFirst(List *L, int data);
+void insertRear(List *L, int data);
+void insertAt(List *L, int data, int pos);
+void deleteFirst(List *L);
+void deleteRear(List *L);
+void deleteAt(List *L, int pos);
+void display(List L);
 
+int main() {
+    
+    List L = NULL;
+    
+    insertFirst(&L, 10);
+    insertFirst(&L, 20);
+    insertRear(&L, 50);
+    insertRear(&L, 5);
+    insertAt(&L, 100, 0);
+    
+    display(L);
+    
+    printf("\nAfter deletion: ");
+    deleteFirst(&L);
+    deleteRear(&L);
+    deleteAt(&L, 0);
+    display(L);
 
-
-int main(){
-    
-    ctrlink head = NULL;
-    
-    insertFront(&head, 1);
-    insertRear(&head, 2);
-    insertAt(&head, 0, 300);
-    display(head);
-    
-    
     return 0;
 }
 
-ctrlink createNode(int value){
-    ctrlink newNode = (ctrlink)malloc(sizeof(LIST));
-    newNode->data = value;
+List createNode(int data){
+    List newNode = (List)malloc(sizeof(struct node));
+    newNode->data = data;
     newNode->next = NULL;
     return newNode;
 }
 
-void insertFront(ctrlink *head, int value){
+void insertFirst(List *L, int data){
     
-    ctrlink newNode = createNode(value);
+    List newNode = createNode(data);
     
-    newNode->next = *head;
-    *head = newNode;
+    newNode->next = *L;
+    *L = newNode;
 }
 
-void insertRear(ctrlink *head, int value){
+void insertRear(List *L, int data){
     
-    ctrlink newNode = createNode(value);
+    List newNode = createNode(data);
     
-    if(*head== NULL){
-        *head = newNode;
+    if(newNode == NULL){
+        *L = newNode;
         return;
     }
     
-    ctrlink temp = *head;
+    List temp = *L;
+    
     while(temp->next != NULL){
         temp = temp->next;
     }
     temp->next = newNode;
 }
 
-void deleteFront(ctrlink *head){
+void deleteFirst(List *L){
     
-    if(*head == NULL) return;
-    
-    ctrlink temp = *head;
-    *head = (*head)->next;
+    List temp = *L;
+    *L = (*L)->next;
     free(temp);
 }
 
-void deleteRear(ctrlink *head){
+void deleteRear(List *L){
     
-    if(*head == NULL) return;
+    if(*L == NULL) return;
     
-    if((*head)->next == NULL){
-        free(*head);
-        *head = NULL;
+    if((*L)->next == NULL){
+        free(*L);
+        *L = NULL;
         return;
     }
     
-    ctrlink temp = *head;
+    List temp = *L;
     while(temp->next->next != NULL){
         temp = temp->next;
     }
     free(temp->next);
     temp->next = NULL;
-    
 }
 
-void deleteAt(ctrlink *head, int pos){
+void deleteAt(List *L, int pos){
     
-    if(*head == NULL) return;
+    if(*L == NULL) return;
+    
     if(pos == 0){
-        deleteFront(head);
+        deleteFirst(L);
         return;
     }
     
-    ctrlink temp = *head;
-    for(int i = 0; temp != NULL && i < pos - 1; i++){
+    List temp = *L;
+    for(int i = 0; temp->next != NULL && i < pos - 1; i++){
         temp = temp->next;
     }
     
-    if(temp == NULL || temp->next == NULL) return;
-    
-    ctrlink Node = temp->next;
+    List Node = temp->next;
     temp->next = Node->next;
     free(Node);
 }
 
-void insertAt(ctrlink *head, int pos, int value){
- 
-    if(pos == 0){
-        insertFront(head, value);
-        return;
-    }   
+void insertAt(List *L, int data, int pos){
     
-    ctrlink newNode = createNode(value);
-    ctrlink temp = *head;
+    if(pos == 0){
+        insertFirst(L, data);
+        return;
+    }
+    
+    List newNode = createNode(data);
+    List temp = *L;
     
     for(int i = 0; temp != NULL && i < pos - 1; i++){
         temp = temp->next;
-    }
-    
-    if(temp == NULL){
-        printf("Invalid position");
-        return;
     }
     
     newNode->next = temp->next;
     temp->next = newNode;
 }
 
-void display(ctrlink head){
+void display(List L){
     
-    ctrlink temp = head;
-    
+    List temp = L;
     while(temp != NULL){
         printf("%d", temp->data);
-        
         if(temp->next != NULL){
             printf("->");
         }
         temp = temp->next;
     }
-    
-    printf("->NULL");
-    
+    printf("->NULL\n");
 }
-
