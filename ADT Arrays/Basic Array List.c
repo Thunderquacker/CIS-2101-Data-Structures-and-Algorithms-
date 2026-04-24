@@ -1,37 +1,34 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#define MAX 10
+
+#define MAX 20
 
 typedef struct{
-    int elem[MAX];
+    int data[MAX];
     int count;
 }LIST;
 
 void init(LIST *L);
-void display(LIST *L);
-void insertFront(LIST *L, int data);
+void display(LIST L);
+void insertFirst(LIST *L, int data);
 void insertRear(LIST *L, int data);
-void insertpos(LIST *L, int data, int pos);
+void insertPos(LIST *L, int data, int pos);
+void deleteFirst(LIST *L);
 void deleteRear(LIST *L);
-void deleteFront(LIST *L);
-void deletepos(LIST *L, int pos);
-
+void deleteAt(LIST *L, int pos);
 
 int main(){
     
     LIST L;
-    
     init(&L);
-    insertFront(&L, 10);
-    insertpos(&L, 12, 1);
-    insertRear(&L, 100);
-    insertRear(&L, 200);
-    display(&L);
-    deleteRear(&L);
-    deletepos(&L, 2);
-    deleteFront(&L);
-    display(&L);
+    
+    insertFirst(&L, 11);
+    insertRear(&L, 10);
+    insertFirst(&L, 100);
+    insertRear(&L, 15);
+    insertPos(&L, 10, 0);
+    
+    display(L);
+    
     
     return 0;
 }
@@ -40,60 +37,49 @@ void init(LIST *L){
     L->count = 0;
 }
 
-void insertFront(LIST *L, int data){
-    for(int i = L->count; i > 0; i++){
-        L->count = L->elem[i - 1];
+void insertFirst(LIST *L, int data){
+    for(int i = L->count; i > 0; i--){
+        L->data[i] = L->data[i - 1];
     }
-    L->elem[0] = data;
+    L->data[0] = data;
     L->count++;
 }
 
 void insertRear(LIST *L, int data){
-    L->elem[L->count++] = data;
+    
+    L->data[L->count++] = data;
 }
 
-void insertpos(LIST *L, int data, int pos){
-    if(pos < 0 || pos > MAX){
-        printf("Invalid position.");
-        return;
+void insertPos(LIST *L, int data, int pos){
+    if (pos >= 0 && pos <= L->count && L->count < MAX) {
+    for(int i = L->count; i > pos; i--){
+        L->data[i] = L->data[i - 1];
     }
-    
-    for(int i = L->count; i > pos; i++){
-        L->elem[i] = L->elem[i - 1];
-    }
-    
-    L->elem[pos] = data;
+    L->data[pos] = data;
     L->count++;
+    }
 }
 
-void display(LIST *L){
-    printf("List: ");
-    for(int i = 0; i<L->count; i++){
-        printf("%d ", L->elem[i]);
+void deleteFront(LIST *L){
+    for(int i = 0; i < L->count; i++){
+        L->data[i] = L->data[i + 1];
     }
-    printf("\n");
+    L->count--;
 }
 
 void deleteRear(LIST *L){
     L->count--;
 }
 
-void deleteFront(LIST *L){
-    for(int i = 0; i < L->count - 1; i++){
-        L->elem[i] = L->elem[i + 1];
+void deletePos(LIST *L, int pos){
+    for(int i = pos; i < L->count - 1; i++){
+        L->count = L->data[i + 1];
     }
     L->count--;
 }
 
-void deletepos(LIST *L, int pos){
-    
-    if(pos < 0 || pos > MAX){
-        printf("Invalid position.");
-        return;
+void display(LIST L){
+    for(int i = 0; i < L.count; i++){
+        printf("%d ", L.data[i]);
     }
-    
-    for(int i = pos; i<L->count - 1; i++){
-            L->elem[i] = L->elem[i + 1];
-    }
-    L->count--;
 }
