@@ -143,3 +143,22 @@ void display(List L){
     }
     printf("->NULL\n");
 }
+
+void insertSorted(List *L, int data){
+    
+    List newNode = createNode(data);
+    
+    if(*L == NULL || data < (*L)->data){
+        newNode->next = *L;
+        *L = newNode;
+        return;
+    }
+    
+    List temp = *L;
+    
+    while(temp->next != NULL && temp->next->data < data){
+        temp = temp->next;
+    }
+    newNode->next = temp->next;
+    temp->next = newNode;
+}
