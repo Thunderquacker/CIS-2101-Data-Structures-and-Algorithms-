@@ -138,6 +138,23 @@ void deletePos(LIST **L, int pos){
     free(nodeToDelete);
 }
 
-
+void insertSorted(ctrlink *L, int data){
+    
+    ctrlink newNode = createNode(data);
+    
+    if(*L == NULL || (*L)->data >= data){
+        newNode->next = *L;
+        *L = newNode;
+        return;
+    }
+    
+    ctrlink temp = *L;
+    while(temp->next != NULL && temp->next->data < data){
+        temp = temp->next;
+    }
+    
+    newNode->next = temp->next;
+    temp->next = newNode;
+}
 
 
