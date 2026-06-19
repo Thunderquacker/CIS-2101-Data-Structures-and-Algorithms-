@@ -7,18 +7,20 @@ List init(List L){
 }
 
 List insertSorted(List L, int data){
-    if(L.count >= MAX){
-        printf("Insertion failed.");
+    if (L.count >= MAX) {
+        printf("Array Full\n");
         return L;
     }
-    
-    int i;
-    
-    for(int i = L.count - 1; (i >= 0 && L.elem[i] > data); i--){
-        L.elem[i + 1] = L.elem[i];
+
+    int i = L.count - 1;
+    // Shift elements right while they are greater than data
+    while (i >= 0 && L.data[i] > data) {
+        L.data[i + 1] = L.data[i]; // Shift element right
+        i--;
     }
     
-    L.elem[i + 1] = data;
+    // Insert the data at the vacant slot
+    L.data[i + 1] = data;
     L.count++;
     return L;
 }
