@@ -1,82 +1,78 @@
 // Online C compiler to run C program online
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
-
 
 typedef struct{
     unsigned int field;
-} Set;
+}Set;
 
 void init(Set *s);
-void insert(Set *s, int elem);
-void deleteSet(Set *s, int elem);
-bool find(Set s, int elem);
+void insert(Set *s, int data);
+void deleteSet(Set *s, int data);
+bool find(Set s, int data);
 Set intersec(Set A, Set B);
-Set union_set(Set A, Set B);
+Set unionSet(Set A, Set B);
 Set diff(Set A, Set B);
 void display(Set s);
 
-
-int main() {
-    // Write C code here
-    Set A, B, result;
-    init(&A);
+int main(){
     
-    insert(&A, 1);
-    insert(&A, 7);
-    display(A);
+    Set A, B, C;
+    
+    init(&A);
+    insert(&A, 6);
+    insert(&A, 5);
+    insert(&A, 3);
     
     init(&B);
     insert(&B, 6);
-    insert(&B, 1);
-    display(B);
+    insert(&B, 7);
+    insert(&B, 3);
     
-    printf("Intersection: ");
-    result = intersec(A, B);
-    display(result);
-    
-    printf("Difference: ");
-    result = diff(A, B);
-    display(result);
+    init(&C);
     
     printf("Union: ");
-    result = union_set(A, B);
-    display(result);
-
+    C = unionSet(A, B);
+    display(C);
+    
+    printf("Intersection: ");
+    C = intersec(A, B);
+    display(C);
+    
     return 0;
 }
+
 
 void init(Set *s){
     s->field = 0;
 }
 
-void insert(Set *s, int elem){
-    if(elem >= 0 && elem < 8){
-        s->field |= (1 << elem);
+void insert(Set *s, int data){
+    if(data >= 0 && data < 8){
+        s->field |= (1 << data);
     }
 }
 
-void deleteSet(Set *s, int elem){
-    if(elem >= 0 && elem < 8){
-        s->field &= ~(elem << 8);
+void deleteSet(Set *s, int data){
+    if(data >= 0 && data < 8){
+        s->field &= ~(1 << data);
     }
-} 
-
-bool find(Set s, int elem){
-    if(elem < 0 || elem >= 8) return false;
-        return (s.field & (1 << elem)) != 0;
 }
 
-Set union_set(Set A, Set B){
-    Set result;
-    result.field = A.field | B.field;
-    return result;
+bool find(Set s, int data){
+    if(data < 0 && data >= 8) return false;
+    return (s.field & (1 << data)) != 0;
 }
 
 Set intersec(Set A, Set B){
     Set result;
     result.field = A.field & B.field;
+    return result;
+}
+
+Set unionSet(Set A, Set B){
+    Set result;
+    result.field = A.field | B.field;
     return result;
 }
 
@@ -91,14 +87,11 @@ void display(Set s){
     printf("{");
     for(int i = 0; i < 8; i++){
         if(find(s, i)){
-             if(!first)
-                printf(",");
+            if(!first) printf(",");
             printf("%d", i);
-                bool first = false;
+            first = false;
         }
     }
     printf("}\n");
 }
-
-
 
